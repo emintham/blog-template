@@ -8,7 +8,7 @@ const formatDateForInput = (date?: string | Date): string => {
   if (!date) return TODAY_ISO;
   try {
     return new Date(date).toISOString().split("T")[0];
-  } catch (e) {
+  } catch { // _e removed
     return TODAY_ISO;
   }
 };
@@ -53,7 +53,7 @@ export function usePostFormInitialization({
         postType: postData.postType || "standard",
         tags: processSourceTags(postData.tags),
         series: postData.series || "",
-        draft: postData.hasOwnProperty("draft") ? !!postData.draft : false,
+        draft: Object.hasOwn(postData, "draft") ? !!postData.draft : false,
         bodyContent: postData.bodyContent || "",
         bookTitle: postData.bookTitle || "",
         bookAuthor: postData.bookAuthor || "",

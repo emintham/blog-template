@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useForm, type UseFormReturn, Controller } from "react-hook-form";
-import type { PostSourceData, PostFormData, Quote } from "../../types/admin";
+import type { PostSourceData, PostFormData } from "../../types/admin";
 import { usePostSubmission } from "../../hooks/usePostSubmission";
 import { useInlineQuotes } from "../../hooks/useInlineQuotes";
 import { useAutoSave } from "../../hooks/useAutoSave";
@@ -197,7 +197,7 @@ const PostForm: React.FC<PostFormProps> = ({
     if (parentForm && parentForm instanceof HTMLFormElement) {
       const formSubmitWrapper = async (event: SubmitEvent) => {
         event.preventDefault();
-        handleSubmit(async (data) => {
+        handleSubmit(async (data: PostFormData) => {
           await submitPost({ ...data, inlineQuotes });
         })();
       };
@@ -209,8 +209,8 @@ const PostForm: React.FC<PostFormProps> = ({
     }
   }, [formId, handleSubmit, submitPost, inlineQuotes]);
 
-  const { ref: bodyContentRHFRef, ...bodyContentRestProps } =
-    register("bodyContent");
+  // Unused const { ref: bodyContentRHFRef, ...bodyContentRestProps } = register("bodyContent"); removed.
+  // register("bodyContent") is called directly in the JSX for the textarea.
 
   return (
     <>
@@ -281,7 +281,7 @@ const PostForm: React.FC<PostFormProps> = ({
           />
           {errors.tags && (
             <span className="field-error-message">
-              {(errors.tags as any).message || "Invalid tags"}
+              {(errors.tags?.message as string | undefined) || "Invalid tags"}
             </span>
           )}
         </div>
@@ -352,7 +352,7 @@ const PostForm: React.FC<PostFormProps> = ({
             />
             {errors.bookTags && (
               <span className="field-error-message">
-                {(errors.bookTags as any).message || "Invalid book tags"}
+                {(errors.bookTags?.message as string | undefined) || "Invalid book tags"}
               </span>
             )}
           </div>

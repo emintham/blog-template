@@ -7,8 +7,10 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import matter from "gray-matter";
 import yaml from "js-yaml";
+// import { z } from "astro:content"; // Removed unused z import
 import "../../../styles/admin.css";
-import type { PostSourceData, Quote } from "../../../types/admin";
+import type { PostSourceData } from "../../../types/admin";
+import { quoteSchema } from "../../../content/config"; // Import quoteSchema
 import {
   getUniqueTagNames,
   getUniqueSeriesNames,
@@ -64,28 +66,39 @@ if (!slug) {
           const quotesFileContent = await fs.readFile(quotesFilePath, "utf-8");
           const parsedQuotesData = yaml.load(quotesFileContent) as {
             bookSlug?: string;
-            quotes?: any[];
+            quotes?: unknown[]; // Use unknown for initial parsing
           };
+
+          // type ParsedQuote = z.infer<typeof quoteSchema>; // Removed as q_typed infers type directly
 
           if (parsedQuotesData && Array.isArray(parsedQuotesData.quotes)) {
             postToEdit.inlineQuotes = parsedQuotesData.quotes.map(
-              (q: any, index: number) => ({
-                id: `loaded-${slug}-${index}-${Date.now()}`, // Generate a unique ID for React key
-                text: q.text || "",
-                quoteAuthor: q.quoteAuthor || "",
-                tags: Array.isArray(q.tags) ? q.tags.map(String) : [],
-                quoteSource: q.quoteSource || "",
-              })
+              (q_raw: unknown, index: number) => {
+                const parsedQuote = quoteSchema.safeParse(q_raw);
+                if (parsedQuote.success) {
+                  const q_typed = parsedQuote.data;
+                  return {
+                    id: `loaded-${slug}-${index}-${Date.now()}`,
+                    text: q_typed.text || "",
+                    quoteAuthor: q_typed.quoteAuthor || "",
+                    tags: Array.isArray(q_typed.tags) ? q_typed.tags.map(String) : [],
+                    quoteSource: q_typed.quoteSource || "",
+                  };
+                } else {
+                  console.warn(`Error parsing quote at index ${index}:`, parsedQuote.error.flatten());
+                  return { id: `error-${slug}-${index}-${Date.now()}`, text: "Error: Could not parse quote", tags: [], quoteAuthor: "", quoteSource: "" };
+                }
+              }
             );
           } else {
-            postToEdit.inlineQuotes = []; // Set to empty if quotes are not in expected format
+            postToEdit.inlineQuotes = [];
           }
-        } catch (quoteError) {
+        } catch (quoteError: unknown) {
           console.warn(
             `Could not load or parse quotes file: ${quotesFilePath}`,
-            quoteError
+            quoteError instanceof Error ? quoteError.message : String(quoteError)
           );
-          postToEdit.inlineQuotes = []; // Set to empty if file not found or error
+          postToEdit.inlineQuotes = [];
         }
       }
 
@@ -94,7 +107,7 @@ if (!slug) {
 
       fileFound = true;
       break;
-    } catch (e) {
+    } catch { // _e removed
       // File not found or error reading
     }
   }

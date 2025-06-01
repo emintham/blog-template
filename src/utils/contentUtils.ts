@@ -73,16 +73,14 @@ export async function getUniqueTagsWithCounts<C extends "blog" | "bookQuotes">(
  */
 export async function getUniqueTagNames(
   collectionName: "blog" | "bookQuotes",
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  tagExtractor: (data: any) => string[] | undefined,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  filterPredicate?: (entry: CollectionEntry<any>) => boolean
+  tagExtractor: (
+    data: CollectionEntry<"blog">["data"] | CollectionEntry<"bookQuotes">["data"]
+  ) => string[] | undefined,
+  filterPredicate?: (
+    entry: CollectionEntry<"blog"> | CollectionEntry<"bookQuotes">
+  ) => boolean
 ): Promise<string[]> {
-   
-  const allEntries = await getCollection(
-    collectionName as any,
-    filterPredicate as any
-  );
+  const allEntries = await getCollection(collectionName, filterPredicate);
   const tagSet = new Set<string>();
 
   allEntries.forEach((entry) => {
@@ -99,7 +97,7 @@ export async function getUniqueTagNames(
 }
 
 export async function getUniqueSeriesNames(): Promise<string[]> {
-  const allPosts = await getCollection("blog", ({ data }) => {
+  const allPosts = await getCollection("blog", () => { // { data } removed
     // Include all posts, draft or not, for series suggestions
     return true;
   });

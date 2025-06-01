@@ -32,10 +32,10 @@ const TagsComponent: React.FC<TagsComponentProps> = ({
   }));
 
   const currentTagOptions: readonly SelectOption[] = // Use SelectOption
-  (Array.isArray(value) ? value : []).map((v) => ({
-    value: v.toLowerCase(),
-    label: v,
-  }));
+    (Array.isArray(value) ? value : []).map((v) => ({
+      value: v.toLowerCase(),
+      label: v,
+    }));
 
   const handleChange = (newValue: OnChangeValue<SelectOption, true>) => {
     // Use SelectOption

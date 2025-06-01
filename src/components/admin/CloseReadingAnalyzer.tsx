@@ -234,14 +234,14 @@ const CloseReadingAnalyzer: React.FC = () => {
             alert("Error reading file content.");
             return;
           }
-          const imported = JSON.parse(importedResult) as any[];
+          const imported = JSON.parse(importedResult) as Partial<ParagraphData>[];
 
           if (Array.isArray(imported)) {
-            const validatedData: AnalysisData = imported.map((p: any) => ({
+            const validatedData: AnalysisData = imported.map((p: Partial<ParagraphData>) => ({
               id: p.id || uuidv4Func(),
               sentences:
                 Array.isArray(p.sentences) && p.sentences.length > 0
-                  ? p.sentences.map((s: any) => ({
+                  ? p.sentences.map((s: Partial<SentenceData>) => ({
                       id: s.id || uuidv4Func(),
                       text: typeof s.text === "string" ? s.text : "",
                       summary: typeof s.summary === "string" ? s.summary : "",

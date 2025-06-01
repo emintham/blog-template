@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import type { UseFormGetValues } from "react-hook-form";
-import type { PostFormData, Quote } from "../types/admin";
+import type { PostFormData } from "../types/admin";
 
 interface UseAutoSaveProps {
   isSubmitting: boolean;

@@ -245,30 +245,54 @@ body.admin-scope .admin-post-list .list-item-entry:last-child {
 
 body.admin-scope .admin-post-list .list-item-entry .post-info-column {
   flex-grow: 1; /* Allows this column to take up all available space on the left */
-  margin-right: var(--spacing-md-admin); /* Space between text content and the first button */
+  margin-right: var(
+    --spacing-md-admin
+  ); /* Space between text content and the first button */
   min-width: 0; /* Important for flex items containing text that might overflow/wrap */
 }
 
-body.admin-scope .admin-post-list .list-item-entry .post-info-column .title-line {
-  margin-bottom: var(--spacing-xs-admin); /* Small space between title and meta details */
+body.admin-scope
+  .admin-post-list
+  .list-item-entry
+  .post-info-column
+  .title-line {
+  margin-bottom: var(
+    --spacing-xs-admin
+  ); /* Small space between title and meta details */
   display: flex; /* Helps align badge and title if badge is tall */
   align-items: center; /* Vertically align badge and title */
 }
 
-body.admin-scope .admin-post-list .list-item-entry .post-info-column .list-item-name {
+body.admin-scope
+  .admin-post-list
+  .list-item-entry
+  .post-info-column
+  .list-item-name {
   font-weight: 500; /* Or your preferred weight for post titles in the list */
   color: var(--color-text-admin-primary); /* Using primary text color */
   text-decoration: none; /* Removing underline from link */
 }
 
-body.admin-scope .admin-post-list .list-item-entry .post-info-column .list-item-name:hover {
+body.admin-scope
+  .admin-post-list
+  .list-item-entry
+  .post-info-column
+  .list-item-name:hover {
   color: var(--color-accent-admin); /* Standard link hover */
   text-decoration: underline; /* Add underline on hover */
 }
 
-body.admin-scope .admin-post-list .list-item-entry .post-info-column .status-draft-badge {
-  background-color: var(--color-warning-admin); /* Using warning color for draft status */
-  color: var(--color-background-admin); /* Text color that contrasts with badge background */
+body.admin-scope
+  .admin-post-list
+  .list-item-entry
+  .post-info-column
+  .status-draft-badge {
+  background-color: var(
+    --color-warning-admin
+  ); /* Using warning color for draft status */
+  color: var(
+    --color-background-admin
+  ); /* Text color that contrasts with badge background */
   padding: calc(var(--spacing-xs-admin) / 2) var(--spacing-xs-admin); /* Small padding */
   border-radius: var(--border-radius-admin);
   font-size: 0.75rem; /* Smaller font for the badge */
@@ -306,11 +330,11 @@ body.admin-scope .admin-post-list .list-item-entry .button-edit + .button-delete
 body.admin-scope fieldset {
   /* border: none; */
 
- /* Replaced */
+  /* Replaced */
 
   /* padding: 0; */
 
- /* Replaced */
+  /* Replaced */
   margin: 0 0 var(--spacing-xl-admin) 0;
   border: 1px solid var(--color-admin-fieldset-border); /* Use new unified color */
   padding: var(--spacing-xl-admin) var(--spacing-lg-admin)
@@ -411,7 +435,9 @@ body.admin-scope .button-primary:focus {
   /* Opaque on hover - fill with accent color */
   background-color: var(--color-accent-admin); /* Accent green background */
   color: var(--color-background-admin); /* Light text for contrast */
-  border-color: var(--color-focus-admin); /* Slightly darker accent green border for focus, or use var(--color-accent-admin) */
+  border-color: var(
+    --color-focus-admin
+  ); /* Slightly darker accent green border for focus, or use var(--color-accent-admin) */
 }
 
 body.admin-scope .button-edit,
@@ -478,7 +504,12 @@ body.admin-scope .button-delete {
 body.admin-scope .button-delete:hover,
 body.admin-scope .button-delete:focus {
   /* ---- MODIFIED: Hover state for new muted red ---- */
-  background-color: rgba(199, 140, 134, 0.05); /* Very light transparent version of #c78c86 */
+  background-color: rgba(
+    199,
+    140,
+    134,
+    0.05
+  ); /* Very light transparent version of #c78c86 */
   color: #af746e; /* Slightly darker/desaturated version of #c78c86 for hover text */
   border-color: #af746e; /* Slightly darker/desaturated version of #c78c86 for hover border */
   /* ---- END MODIFIED ---- */
@@ -486,7 +517,11 @@ body.admin-scope .button-delete:focus {
 }
 
 /* Spacing for the delete button when it follows an edit button in the admin post list */
-body.admin-scope .admin-post-list .list-item-entry .button-edit + .button-delete {
+body.admin-scope
+  .admin-post-list
+  .list-item-entry
+  .button-edit
+  + .button-delete {
   margin-left: var(--spacing-sm-admin);
 }
 
@@ -511,7 +546,7 @@ body.admin-scope .inline-quotes-manager .quote-item {
 
   /* border: 1px solid var(--color-border-admin-subtle); */
 
- /* Keep or remove based on preference */
+  /* Keep or remove based on preference */
   margin-bottom: var(--spacing-lg-admin); /* Space between quote items */
   position: relative; /* For the pseudo-element divider */
 }

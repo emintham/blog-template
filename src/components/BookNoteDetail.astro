@@ -1,6 +1,9 @@
 ---
 // src/components/BookNoteDetail.astro
 import { getEntry } from "astro:content";
+import { z } from "astro:content"; // Import z
+import { quoteSchema } from "../../content/config"; // Import quoteSchema
+import type { AstroComponent } from "astro"; // Import AstroComponent
 // import { generateSlug } from '../../utils/slugify'; // Only needed if linking bookTags
 
 import Remark42Comments from "./Remark42Comments.astro";
@@ -19,16 +22,18 @@ interface Props {
       quotesRef?: string;
       bookTags?: string[];
     };
-    render: () => Promise<{ Content: any }>;
+    render: () => Promise<{ Content: AstroComponent }>; // Changed to AstroComponent
     slug: string;
   };
 }
 
-const { entry } = Astro.props;
+type FetchedQuoteType = z.infer<typeof quoteSchema>;
+
+const { entry } = Astro.props as Props; // Added "as Props"
 const { Content } = await entry.render();
 const frontmatter = entry.data;
 
-let fetchedQuotes = [];
+let fetchedQuotes: FetchedQuoteType[] = []; // Typed fetchedQuotes
 if (frontmatter.quotesRef) {
   try {
     const bookQuotesData = await getEntry("bookQuotes", frontmatter.quotesRef);

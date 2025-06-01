@@ -44,15 +44,23 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Astro's `postEntry.id` for markdown/mdx files is the filename (e.g., `my-post.mdx`)
     // For content collections, the `id` is the relative path from `src/content/collectionName/`
-    const filePath = path.join(projectRoot, "src", "content", "blog", postEntry.id);
+    const filePath = path.join(
+      projectRoot,
+      "src",
+      "content",
+      "blog",
+      postEntry.id
+    );
 
     try {
       await fs.access(filePath); // Check if file exists before attempting to delete
-    } catch (e) {
+    } catch { // e removed
       // This case should ideally be caught by getEntryBySlug not finding the post,
       // but as a safeguard:
       return new Response(
-        JSON.stringify({ message: `File not found for slug '${slug}' at path ${filePath}` }),
+        JSON.stringify({
+          message: `File not found for slug '${slug}' at path ${filePath}`,
+        }),
         {
           status: 404,
           headers: { "Content-Type": "application/json" },
@@ -77,10 +85,11 @@ export const POST: APIRoute = async ({ request }) => {
         await fs.access(quotesFilePath);
         await fs.unlink(quotesFilePath);
         quotesMessage = ` Also deleted associated quotes file: ${quotesFileName}`;
-      } catch (quoteError: any) {
+      } catch (quoteError: unknown) {
         // Log if the quotes file doesn't exist or couldn't be deleted, but don't fail the whole operation
+        const quoteErrorMessage = quoteError instanceof Error ? quoteError.message : String(quoteError);
         console.warn(
-          `[API Delete] Could not delete quotes file ${quotesFilePath}: ${quoteError.message}`
+          `[API Delete] Could not delete quotes file ${quotesFilePath}: ${quoteErrorMessage}`
         );
         quotesMessage = ` Could not delete associated quotes file: ${quotesFileName} (may not exist or permissions issue).`;
       }
@@ -95,19 +104,26 @@ export const POST: APIRoute = async ({ request }) => {
         headers: { "Content-Type": "application/json" },
       }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[API Delete] Error deleting post:", error);
-    // Check if the error is due to JSON parsing
-     if (error instanceof SyntaxError && error.message.toLowerCase().includes("json")) {
-      return new Response(JSON.stringify({ message: "Invalid JSON data in request body." }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+    const errorDetail = error instanceof Error ? error.message : String(error);
+
+    if (
+      error instanceof SyntaxError &&
+      errorDetail.toLowerCase().includes("json")
+    ) {
+      return new Response(
+        JSON.stringify({ message: "Invalid JSON data in request body." }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
     }
     return new Response(
       JSON.stringify({
         message: "Error deleting post.",
-        errorDetail: error.message,
+        errorDetail: errorDetail,
       }),
       {
         status: 500,

@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import yaml from "js-yaml"; // Import js-yaml
 import { generateSlug } from "../../utils/slugify";
-import type { PostApiPayload, Quote } from "../../types/admin"; // Import Quote
+import type { PostApiPayload } from "../../types/admin"; // Quote import removed
 import {
   transformApiPayloadToFrontmatter,
   generatePostFileContent,
@@ -68,7 +68,7 @@ export const POST: APIRoute = async ({ request }) => {
             headers: { "Content-Type": "application/json" },
           }
         );
-      } catch (e) {
+      } catch { // e removed
         // File does not exist at newFilePath, safe to proceed with rename/move.
       }
     }
@@ -93,11 +93,12 @@ export const POST: APIRoute = async ({ request }) => {
             `[API Update] Successfully deleted old file: ${originalFilePath}`
           );
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         // Log a warning if the old file couldn't be deleted, but don't fail the whole operation
         // as the new file has been successfully written.
+        const errMessage = err instanceof Error ? err.message : String(err);
         console.warn(
-          `[API Update] Could not delete old file at ${originalFilePath} (it might have been already moved/deleted or permissions issue): ${err.message}`
+          `[API Update] Could not delete old file at ${originalFilePath} (it might have been already moved/deleted or permissions issue): ${errMessage}`
         );
       }
     }
@@ -114,10 +115,11 @@ export const POST: APIRoute = async ({ request }) => {
       // Ensure the bookQuotes directory exists
       try {
         await fs.mkdir(quotesDir, { recursive: true });
-      } catch (mkdirError: any) {
+      } catch (mkdirError: unknown) {
+        const mkdirErrorMessage = mkdirError instanceof Error ? mkdirError.message : String(mkdirError);
         console.error(
           `[API Update] Error creating bookQuotes directory ${quotesDir}:`,
-          mkdirError
+          mkdirErrorMessage
         );
         // Potentially return an error or log and continue without saving quotes
         // For now, we'll log and attempt to write, which might fail if dir doesn't exist.
@@ -144,10 +146,11 @@ export const POST: APIRoute = async ({ request }) => {
             `[API Update] Successfully updated quotes file: ${quotesFilePath}`
           );
         }
-      } catch (quoteError: any) {
+      } catch (quoteError: unknown) {
+        const quoteErrorMessage = quoteError instanceof Error ? quoteError.message : String(quoteError);
         console.error(
           `[API Update] Error writing quotes file ${quotesFilePath}:`,
-          quoteError
+          quoteErrorMessage
         );
         // Decide if this should be a critical error. For now, log and continue.
         // The main post was updated, but quotes might be out of sync.
@@ -171,16 +174,17 @@ export const POST: APIRoute = async ({ request }) => {
         headers: { "Content-Type": "application/json" },
       }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorDetail = error instanceof Error ? error.message : String(error);
     if (
       error instanceof SyntaxError &&
-      error.message.toLowerCase().includes("json")
+      errorDetail.toLowerCase().includes("json")
     ) {
       console.error("[API Update] Error parsing JSON body:", error);
       return new Response(
         JSON.stringify({
           message: "Invalid JSON data received for update.",
-          errorDetail: error.message,
+          errorDetail: errorDetail,
         }),
         {
           status: 400,
@@ -192,7 +196,7 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(
       JSON.stringify({
         message: "Error updating post.",
-        errorDetail: error.message,
+        errorDetail: errorDetail,
       }),
       {
         status: 500,

@@ -3,7 +3,7 @@ import { defineCollection, z } from "astro:content";
 import { AUTHOR_NAME } from "../siteConfig.ts"; // Adjust path if siteConfig.ts is not in src/
 
 // Define the schema for an individual quote
-const quoteSchema = z.object({
+export const quoteSchema = z.object({
   text: z.string(),
   tags: z.array(z.string()).optional(), // Tags for the quote itself
   quoteAuthor: z.string().optional(), // Who said the quote (if not the book's author)

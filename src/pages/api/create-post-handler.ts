@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import yaml from "js-yaml"; // Import js-yaml
 import { generateSlug } from "../../utils/slugify";
-import type { PostApiPayload, Quote } from "../../types/admin"; // Import Quote
+import type { PostApiPayload } from "../../types/admin";
 import {
   transformApiPayloadToFrontmatter,
   generatePostFileContent,
@@ -53,7 +53,7 @@ export const POST: APIRoute = async ({ request }) => {
           headers: { "Content-Type": "application/json" },
         }
       );
-    } catch (error) {
+    } catch { // _error removed
       // File does not exist, proceed with creation
     }
 
@@ -70,10 +70,10 @@ export const POST: APIRoute = async ({ request }) => {
 
       try {
         await fs.mkdir(quotesDir, { recursive: true });
-      } catch (mkdirError: any) {
+    } catch (mkdirError: unknown) {
         console.error(
           `[API Create] Error creating bookQuotes directory ${quotesDir}:`,
-          mkdirError
+        mkdirError instanceof Error ? mkdirError.message : String(mkdirError)
         );
         // Potentially return an error or log and continue without saving quotes
       }
@@ -98,10 +98,10 @@ export const POST: APIRoute = async ({ request }) => {
             `[API Create] Successfully created quotes file: ${quotesFilePath}`
           );
         }
-      } catch (quoteError: any) {
+      } catch (quoteError: unknown) {
         console.error(
           `[API Create] Error writing quotes file ${quotesFilePath}:`,
-          quoteError
+          quoteError instanceof Error ? quoteError.message : String(quoteError)
         );
         // Decide if this should be a critical error.
         // Could add a warning to the response message.
@@ -118,7 +118,16 @@ export const POST: APIRoute = async ({ request }) => {
 
     await fs.writeFile(filePath, fileContent);
 
-    const responsePayload: any = {
+    interface ResponsePayload {
+      message: string;
+      filename: string;
+      path: string;
+      newSlug: string;
+      title: string;
+      quotesRef?: string;
+    }
+
+    const responsePayload: ResponsePayload = {
       message: "Post created successfully!",
       filename: filename,
       path: `/blog/${slug}`,
@@ -134,16 +143,21 @@ export const POST: APIRoute = async ({ request }) => {
       status: 201,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    let errorMessage = "An unknown error occurred.";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+
     if (
-      error instanceof SyntaxError &&
-      error.message.toLowerCase().includes("json")
+      error instanceof SyntaxError && // Check if error is SyntaxError
+      errorMessage.toLowerCase().includes("json")
     ) {
       console.error("[API Create] Error parsing JSON body:", error);
       return new Response(
         JSON.stringify({
           message: "Invalid JSON data received.",
-          errorDetail: error.message,
+          errorDetail: errorMessage,
         }),
         {
           status: 400,
@@ -155,7 +169,7 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(
       JSON.stringify({
         message: "Error creating post.",
-        errorDetail: error.message,
+        errorDetail: errorMessage,
       }),
       {
         status: 500,

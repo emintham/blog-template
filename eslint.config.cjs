@@ -1,11 +1,18 @@
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { defineConfig } = require("eslint/config");
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const globals = require("globals");
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const tsParser = require("@typescript-eslint/parser");
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const typescriptEslint = require("@typescript-eslint/eslint-plugin");
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const parser = require("astro-eslint-parser");
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const js = require("@eslint/js");
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { FlatCompat } = require("@eslint/eslintrc");
 
 const compat = new FlatCompat({

@@ -23,7 +23,7 @@ interface Props {
   };
 }
 
-const { post } = Astro.props;
+const { post } = Astro.props as Props; // Added "as Props"
 const frontmatter = post.data;
 
 // Determine the link for the preview.

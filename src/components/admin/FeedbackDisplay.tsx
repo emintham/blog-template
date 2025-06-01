@@ -14,7 +14,7 @@ interface PostSuccessEventResult {
   originalFilePath?: string;
   originalExtension?: string;
   // Include other properties from PostSourceData if needed by FeedbackDisplay directly
-  [key: string]: any; // Allow other properties
+  [key:string]: unknown; // Changed from any to unknown
 }
 
 const FeedbackDisplay: React.FC<FeedbackDisplayProps> = ({ formId }) => {
@@ -77,11 +77,11 @@ const FeedbackDisplay: React.FC<FeedbackDisplayProps> = ({ formId }) => {
   const handlePostFormError = useCallback(
     (event: Event) => {
       const customEvent = event as CustomEvent<{
-        error: any;
+        error: unknown; // Changed from any to unknown
         actionType: "create" | "update";
       }>;
       const { error, actionType } = customEvent.detail;
-      const message = error?.message || "An unknown error occurred.";
+      const message = error instanceof Error ? error.message : String(error.toString());
       showFeedback(
         `Error ${actionType === "create" ? "creating" : "updating"} post: ${message}`,
         "error"
