@@ -1,0 +1,33 @@
+---
+// src/pages/admin/analyzeV2.astro
+export const prerender = false;
+
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { SITE_TITLE } from "../../../siteConfig";
+import "../../../styles/admin.css";
+import "../../../styles/analyzeV2.css";
+// Potentially add a new CSS file for analyzeV2 if needed, e.g., "../../../styles/analyzeV2.css";
+
+// Import your new main React TSX component
+import PassageAnalyzer from "../../../components/admin/PassageAnalyzer.tsx";
+
+// Basic security: hide page in production if you don't have auth
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404, statusText: "Not Found" });
+}
+
+const pageTitle = `Passage Analyzer - ${SITE_TITLE}`;
+const pageDescription = "A tool for quickly analyzing pasted text passages.";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} isAdminPage={true}>
+  {/* Ensure UUID is available if PassageAnalyzer needs it, similar to analyze.astro */}
+  <script
+    defer
+    src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"
+    integrity="sha512-UNM1njAgOFUa74Z0bADwAq8gbTcqZC8Ej4xPSzpnh0l6KMevwvkBvbldF9uR++qKeJ+MOZHRjV1HZjoRvjDfNQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"></script>
+
+  <PassageAnalyzer client:load />
+</BaseLayout>

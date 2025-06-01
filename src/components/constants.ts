@@ -81,8 +81,8 @@ export const RHETORICAL_PURPOSES: RhetoricalPurposesMap = {
   ALLUSION: { name: "Allusion", color: "var(--purpose-allusion)" },
 };
 
-export const MAX_WAIT_ATTEMPTS = 50;
-export const WAIT_INTERVAL_MS = 100;
+export const MAX_WAIT_ATTEMPTS = 10; // e.g., 10 attempts
+export const WAIT_INTERVAL_MS = 500; // e.g., 500ms interval
 
 // Helper function (can also be in a utils.ts)
 export const delay = (ms: number): Promise<void> =>

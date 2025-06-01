@@ -1,0 +1,70 @@
+/* src/styles/analyzeV2.css */
+.passage-analyzer-container {
+  display: flex;
+  gap: var(--spacing-xl, 32px); /* Using gap from analyze.css variables */
+  padding: var(--spacing-lg, 24px);
+  height: 100%; /* Try to make it full height */
+  box-sizing: border-box;
+}
+
+.passage-input-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 16px);
+}
+
+.passage-input-area h2 {
+  font-family: var(--font-serif, "Lora", serif);
+  font-size: 1.4rem;
+  color: var(--admin-text-primary, #4a4a4a);
+  margin-top: 0;
+  margin-bottom: 0; /* Adjusted from analyze.css's h2 */
+  font-weight: 500;
+}
+
+.passage-input-area textarea {
+  width: 100%;
+  min-height: 200px; /* Increased min-height */
+  border: 1px solid var(--admin-border-subtle, #ededed);
+  padding: var(--spacing-md, 16px);
+  border-radius: 4px;
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--admin-text-primary, #4a4a4a);
+  background-color: var(--admin-bg, #faf8f5);
+  resize: vertical;
+}
+
+.passage-input-area textarea:focus {
+  outline: none;
+  border-color: var(--admin-focus, #93a191);
+  box-shadow: 0 0 0 2px rgba(163, 177, 161, 0.2); /* Similar to analyze.css */
+}
+
+.reconstructed-passage-display-area { /* Renamed for clarity */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 16px);
+  /* This will use styles for ReconstructedPassage from analyze.css via admin.css */
+}
+
+.reconstructed-passage-display-area h2 {
+  font-family: var(--font-serif, "Lora", serif);
+  font-size: 1.4rem;
+  color: var(--admin-text-primary, #4a4a4a);
+  margin-top: 0;
+  margin-bottom: 0; /* Adjusted */
+  font-weight: 500;
+}
+
+.reconstructed-passage-display-area .passage-content {
+    height: 100%; /* Allow it to take available height */
+    overflow-y: auto; /* Add scroll if content overflows */
+}
+
+/* Ensure ReconstructedPassage component's styles from analyze.css are applied */
+/* These are already imported via admin.css -> analyze.css, but good to be mindful */
+/* .passage-content, .reconstructed-paragraph, .sentence-highlight */
