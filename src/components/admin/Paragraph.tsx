@@ -14,15 +14,23 @@ interface ParagraphProps {
   ) => void;
   onRemoveSentence: (paragraphId: string, sentenceId: string) => void;
   onAddSentenceHere: (paragraphId: string) => void;
+  hoveredPurposeKey: string | null;
+  onSentenceMouseEnter: (purposeKey: string) => void;
+  onSentenceMouseLeave: () => void;
 }
 
-const Paragraph: React.FC<ParagraphProps> = ({
-  paragraph,
-  index,
-  onUpdateSentence,
-  onRemoveSentence,
-  onAddSentenceHere,
-}) => {
+const Paragraph: React.FC<ParagraphProps> = (props) => {
+  const {
+    paragraph,
+    index,
+    onUpdateSentence,
+    onRemoveSentence,
+    onAddSentenceHere,
+    hoveredPurposeKey,
+    onSentenceMouseEnter,
+    onSentenceMouseLeave,
+  } = props;
+
   return (
     <div className="paragraph-group" data-paragraph-id={paragraph.id}>
       <div className="paragraph-group-header">
@@ -37,6 +45,9 @@ const Paragraph: React.FC<ParagraphProps> = ({
               paragraphId={paragraph.id}
               onUpdateSentence={onUpdateSentence}
               onRemoveSentence={onRemoveSentence}
+              hoveredPurposeKey={hoveredPurposeKey}
+              onSentenceMouseEnter={onSentenceMouseEnter}
+              onSentenceMouseLeave={onSentenceMouseLeave}
             />
           </React.Fragment>
         ))}

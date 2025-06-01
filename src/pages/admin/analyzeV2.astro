@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PassageAnalysisInterface from "../../../components/admin/PassageAnalysisInterface.tsx";
+---
+
+<BaseLayout title="Analyze Passage V2 | Admin">
+  <main class="admin-container">
+    <h1 class="admin-title">Analyze Passage - V2</h1>
+    <p class="admin-description">
+      Paste your passage below to automatically segment it into paragraphs and
+      sentences for analysis.
+    </p>
+
+    <PassageAnalysisInterface client:load />
+
+  </main>
+</BaseLayout>
+
+<style is:global>
+  @import "../../../styles/admin.css";
+  /* Add any specific styles for analyzeV2 here or in PassageAnalysisInterface if needed */
+</style>

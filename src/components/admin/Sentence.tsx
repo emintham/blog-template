@@ -14,6 +14,9 @@ interface SentenceProps {
     updatedSentence: SentenceData
   ) => void;
   onRemoveSentence: (paragraphId: string, sentenceId: string) => void;
+  hoveredPurposeKey: string | null;
+  onSentenceMouseEnter: (purposeKey: string) => void;
+  onSentenceMouseLeave: () => void;
 }
 
 const Sentence: React.FC<SentenceProps> = ({
@@ -21,16 +24,43 @@ const Sentence: React.FC<SentenceProps> = ({
   paragraphId,
   onUpdateSentence,
   onRemoveSentence,
+  hoveredPurposeKey,
+  onSentenceMouseEnter,
+  onSentenceMouseLeave,
 }) => {
   const handleInputChange = (field: keyof SentenceData, value: string) => {
     onUpdateSentence(paragraphId, sentence.id, { ...sentence, [field]: value });
   };
 
+  const purpose = RHETORICAL_PURPOSES[sentence.purposeKey] || RHETORICAL_PURPOSES.NONE;
+
+  const dynamicStyle: React.CSSProperties = {
+    transition: 'all 0.2s ease-in-out',
+    padding: '10px',
+    border: '1px solid #eee', // Base border from prompt, might conflict/override analysis-form-section css
+    marginBottom: '10px', // Base margin from prompt
+    backgroundColor: purpose.color, // Set background color based on purpose
+  };
+
+  if (hoveredPurposeKey && hoveredPurposeKey === sentence.purposeKey) {
+    dynamicStyle.fontWeight = 'bold';
+    dynamicStyle.boxShadow = '0 0 8px rgba(0,0,0,0.3)';
+    dynamicStyle.transform = 'scale(1.01)';
+  } else {
+    dynamicStyle.fontWeight = 'normal';
+    dynamicStyle.boxShadow = 'none';
+    dynamicStyle.transform = 'scale(1)';
+  }
+
   return (
     <div
-      className="analysis-form-section"
+      className="analysis-form-section" // Existing class
       data-sentence-id={sentence.id}
       data-paragraph-id={paragraphId}
+      onMouseEnter={() => onSentenceMouseEnter(sentence.purposeKey)}
+      onMouseLeave={onSentenceMouseLeave} // Direct reference if no params needed
+      title={purpose.name}
+      style={dynamicStyle}
     >
       <button
         className="remove-section-btn remove-sentence-btn"

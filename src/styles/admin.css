@@ -575,3 +575,111 @@ body.admin-scope .form-feedback-container.success-message {
 body.admin-scope .form-feedback-container.error-message {
   border-left-color: var(--color-error-admin);
 }
+
+/* Styles for PassageAnalysisInterface and its children */
+body.admin-scope .passage-input-textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc; /* Consider var(--color-border-admin-subtle) */
+  border-radius: 4px; /* Consistent with other inputs if any. var(--border-radius-admin) is 3px */
+  margin-bottom: 15px; /* Increased margin */
+  min-height: 150px; /* Larger default size */
+  font-family: inherit; /* Ensure consistent font */
+  font-size: 1rem;
+  box-sizing: border-box; /* Ensure padding and border don't expand width */
+}
+
+body.admin-scope .analyze-passage-button {
+  padding: 10px 20px; /* More padding */
+  margin-bottom: 20px;
+  cursor: pointer;
+  background-color: var(--color-accent-admin); /* Use theme color */
+  color: white; /* Or var(--color-background-admin) for better theme consistency */
+  border: none;
+  border-radius: 4px; /* var(--border-radius-admin) is 3px */
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+body.admin-scope .analyze-passage-button:hover:not(:disabled) {
+  background-color: var(--color-focus-admin); /* Darken on hover */
+}
+
+body.admin-scope .analyze-passage-button:disabled {
+  background-color: #ccc; /* Fallback, consider var(--color-text-admin-secondary) or a lighter accent */
+  color: #666; /* Darker text on disabled button */
+  cursor: not-allowed;
+}
+
+body.admin-scope .paragraph-group {
+  border: 1px solid var(--color-border-admin-subtle); /* #e0e0e0 */
+  border-radius: var(--border-radius-admin); /* 3px */
+  margin-bottom: 20px;
+  background-color: #fdfdfd; /* Slightly off-white, lighter than #f9f9f9 for subtle distinction */
+}
+
+body.admin-scope .paragraph-group-header {
+  padding: 10px 15px;
+  background-color: #f5f5f5; /* Lighter than #f0f0f0 */
+  border-bottom: 1px solid var(--color-border-admin-subtle);
+  border-top-left-radius: var(--border-radius-admin);
+  border-top-right-radius: var(--border-radius-admin);
+}
+
+body.admin-scope .paragraph-group-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: bold; /* Or 600 to match other h3s */
+  color: var(--color-text-admin-primary);
+}
+
+body.admin-scope .sentences-container {
+  padding: 15px;
+}
+
+/* .analysis-form-section is used by Sentence.tsx */
+/* Dynamic inline styles in Sentence.tsx handle:
+   padding, border, marginBottom, fontWeight, boxShadow, transform, backgroundColor, transition.
+   Avoid defining these properties here for .analysis-form-section to prevent conflicts.
+   Other base styles (e.g., display, position, general text color if not purpose-specific) can be added.
+*/
+body.admin-scope .analysis-form-section {
+  /* Example: if you need all sentence text to be a certain color by default (before purpose color) */
+  /* color: var(--color-text-admin-primary); */
+  /* Ensure it handles its children layout well */
+  position: relative; /* For absolute positioned children like remove button */
+}
+
+body.admin-scope .add-sentence-to-paragraph-container {
+  padding: 10px 15px;
+  border-top: 1px solid var(--color-border-admin-subtle);
+  text-align: center;
+}
+
+/* Ensure .control-button and .control-button-small are defined if not already globally available */
+/* These are assumed to be existing from the prompt, providing base styling for buttons like "Add Sentence" */
+/* If they don't exist, you'd need something like:
+body.admin-scope .control-button { ... }
+body.admin-scope .control-button-small { font-size: 0.8rem; padding: 5px 10px; }
+*/
+
+/* Style for the main interface container if needed, e.g., the margin-top */
+body.admin-scope .passage-analysis-interface {
+  /* The component has an inline style for marginTop: '20px'. This could be moved here. */
+  /* margin-top: 20px; */
+}
+
+/* Styles for loading/message paragraphs within passage-analysis-interface */
+body.admin-scope .passage-analysis-interface > p {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  color: var(--color-text-admin-secondary);
+  font-style: italic;
+}
+
+/* Style for the parsed content container itself, if needed */
+body.admin-scope #parsed-content-container {
+  margin-top: 20px; /* Add some space above the first paragraph group */
+}
+
+```
