@@ -13,23 +13,25 @@ const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 // Function to build the nested list
 function buildToc(headings: MarkdownHeading[]) {
-  const toc: any[] = [];
-  const parentHeadings = new Map();
+	const toc: any[] = [];
+	const parentStack: any[] = [];
 
-  headings.forEach((h) => {
-    const node = { ...h, children: [] };
-    if (h.depth === 2) {
-      toc.push(node);
-      parentHeadings.set(h.depth, node);
-    } else {
-      const parent = parentHeadings.get(h.depth - 1);
-      if (parent) {
-        parent.children.push(node);
-      }
-    }
-  });
+	headings.forEach(h => {
+		const node = { ...h, children: [] };
+		while (parentStack.length > 0 && parentStack[parentStack.length - 1].depth >= h.depth) {
+			parentStack.pop();
+		}
 
-  return toc;
+		if (parentStack.length === 0) {
+			toc.push(node);
+		} else {
+			parentStack[parentStack.length - 1].children.push(node);
+		}
+
+		parentStack.push(node);
+	});
+
+	return toc;
 }
 
 const toc = buildToc(filteredHeadings);
