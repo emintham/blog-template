@@ -110,10 +110,8 @@ export function usePostSubmission({
                 : formData.quotesRef,
           };
 
-          if (!isAutoSave) {
-            resetForm(
-              actionType === "create" ? defaultFormValues : finalFormState
-            );
+          if (!isAutoSave && actionType === "create") {
+            resetForm(defaultFormValues);
           }
 
           const eventDataForResult: PostSuccessEventResult = {

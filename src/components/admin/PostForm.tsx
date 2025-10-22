@@ -122,35 +122,24 @@ const PostForm: React.FC<PostFormProps> = ({
         result: PostSourceData;
         actionType: "create" | "update";
       }>;
+      const { result, actionType } = customEvent.detail;
 
-      if (
-        customEvent.detail.actionType === "update" ||
-        customEvent.detail.actionType === "create"
-      ) {
+      if ((actionType === "update" || actionType === "create") && result) {
+        // For both create and update, synchronize the component's state
+        // with the data returned from the API to ensure subsequent saves work.
+        setCurrentPostDetails(result);
+        setInlineQuotes(result.inlineQuotes || []);
+
         const currentBodyContent = getValues("bodyContent");
         setLastSavedBodyContent(currentBodyContent);
 
-        if (
-          customEvent.detail.actionType === "create" &&
-          customEvent.detail.result
-        ) {
-          setCurrentPostDetails(customEvent.detail.result);
-          if (customEvent.detail.result.inlineQuotes) {
-            setInlineQuotes(customEvent.detail.result.inlineQuotes);
-          }
-        } else if (
-          customEvent.detail.actionType === "update" &&
-          customEvent.detail.result?.inlineQuotes
-        ) {
-          setInlineQuotes(customEvent.detail.result.inlineQuotes);
-        }
-
         if (import.meta.env.DEV) {
           console.log(
-            `[PostForm] Post ${customEvent.detail.actionType}: lastSavedBodyContent updated.`
+            `[PostForm] Post ${actionType}: lastSavedBodyContent updated.`
           );
         }
 
+        // Ensure focus remains in the editor
         if (bodyContentRef.current) {
           setTimeout(() => bodyContentRef.current?.focus(), 0);
         }
