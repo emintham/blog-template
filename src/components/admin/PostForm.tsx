@@ -165,7 +165,7 @@ const PostForm: React.FC<PostFormProps> = ({
 
   const autoSaveSubmitFn = useCallback(
     async (formDataFromAutoSave: PostFormData) => {
-      await submitPost({ ...formDataFromAutoSave, inlineQuotes });
+      await submitPost({ ...formDataFromAutoSave, inlineQuotes }, true);
     },
     [submitPost, inlineQuotes]
   );
@@ -198,7 +198,7 @@ const PostForm: React.FC<PostFormProps> = ({
       const formSubmitWrapper = async (event: SubmitEvent) => {
         event.preventDefault();
         handleSubmit(async (data) => {
-          await submitPost({ ...data, inlineQuotes });
+          await submitPost({ ...data, inlineQuotes }, false);
         })();
       };
 

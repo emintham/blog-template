@@ -6,9 +6,7 @@ interface UseAutoSaveProps {
   isSubmitting: boolean;
   getValues: UseFormGetValues<PostFormData>;
   lastSavedBodyContent: string | undefined;
-  submitFn: (
-    data: PostFormData // submitFn now expects the complete data object
-  ) => Promise<void>;
+  submitFn: (data: PostFormData, isAutoSave: boolean) => Promise<void>;
   intervalMs: number;
 }
 
@@ -48,7 +46,7 @@ export function useAutoSave({
         // Here, we pass the direct formData from getValues().
         // The caller of useAutoSave (PostForm) will ensure submitFn
         // has access to everything it needs (like inlineQuotes).
-        await submitFn(currentFormData);
+        await submitFn(currentFormData, true);
       }
     };
 

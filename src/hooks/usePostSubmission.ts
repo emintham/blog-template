@@ -32,7 +32,7 @@ export function usePostSubmission({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submitPost = useCallback(
-    async (formData: PostFormData) => {
+    async (formData: PostFormData, isAutoSave = false) => {
       setIsSubmitting(true);
       window.dispatchEvent(
         new CustomEvent("postFormSubmitting", {
@@ -110,9 +110,11 @@ export function usePostSubmission({
                 : formData.quotesRef,
           };
 
-          resetForm(
-            actionType === "create" ? defaultFormValues : finalFormState
-          );
+          if (!isAutoSave) {
+            resetForm(
+              actionType === "create" ? defaultFormValues : finalFormState
+            );
+          }
 
           const eventDataForResult: PostSuccessEventResult = {
             ...finalFormState,
