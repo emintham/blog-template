@@ -359,6 +359,60 @@ body.admin-scope .post-form #bodyContent {
   min-height: 200px;
 }
 
+/* New styles for the label and copy button container */
+body.admin-scope .label-with-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm-admin); /* Keep the margin that the label had */
+}
+
+/* Ensure the label itself doesn't have a bottom margin anymore, as the container handles it */
+body.admin-scope .label-with-button label {
+  margin-bottom: 0;
+}
+
+/* Styles for the new ClipboardCopyButton */
+body.admin-scope .clipboard-copy-button {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem; /* Slightly smaller for a utility button */
+  padding: var(--spacing-xs-admin) var(--spacing-sm-admin); /* 4px 8px */
+  border-radius: var(--border-radius-admin);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  transition:
+    background-color 0.2s ease-in-out,
+    color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
+  border: 1px solid var(--color-border-admin-subtle);
+  background-color: transparent;
+  color: var(--color-text-admin-secondary);
+  font-weight: 500;
+  line-height: 1.2; /* Ensure vertical alignment */
+}
+
+body.admin-scope .clipboard-copy-button:hover,
+body.admin-scope .clipboard-copy-button:focus {
+  background-color: rgb(163 177 161 / 10%); /* Subtle hover from .button-edit */
+  border-color: var(--color-accent-admin);
+  color: var(--color-accent-admin);
+  outline: none;
+}
+
+/* Style for the "Copied!" state */
+body.admin-scope .clipboard-copy-button[data-copy-state="copied"] {
+  border-color: var(--color-success-admin);
+  color: var(--color-success-admin);
+}
+
+/* Style for the "Error" state */
+body.admin-scope .clipboard-copy-button[data-copy-state="error"] {
+  border-color: var(--color-error-admin);
+  color: var(--color-error-admin);
+}
+
 body.admin-scope input[type="checkbox"] {
   margin-right: var(--spacing-sm-admin);
   accent-color: var(--color-accent-admin);

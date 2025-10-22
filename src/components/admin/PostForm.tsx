@@ -8,6 +8,7 @@ import { usePostFormInitialization } from "../../hooks/usePostFormInitialization
 import InlineQuotesManager from "./InlineQuotesManager";
 import TagsComponent from "./TagsComponent";
 import SeriesComponent from "./SeriesComponent"; // IMPORT SeriesComponent
+import ClipboardCopyButton from "./ClipboardCopyButton";
 
 export interface PostFormProps {
   postData?: PostSourceData;
@@ -107,6 +108,7 @@ const PostForm: React.FC<PostFormProps> = ({
 
   const watchedPostType = watch("postType", defaultValues.postType);
   const watchedBookTitle = watch("bookTitle");
+  const watchedBodyContent = watch("bodyContent");
   const [showBookNoteFieldsUI, setShowBookNoteFieldsUI] = useState(
     watchedPostType === "bookNote"
   );
@@ -369,7 +371,10 @@ const PostForm: React.FC<PostFormProps> = ({
       <fieldset>
         <legend>Content</legend>
         <div className="form-field">
-          <label htmlFor="bodyContent">Post Body (Markdown)</label>
+          <div className="label-with-button">
+            <label htmlFor="bodyContent">Post Body (Markdown)</label>
+            <ClipboardCopyButton textToCopy={watchedBodyContent} />
+          </div>
           <textarea
             id="bodyContent"
             {...register("bodyContent")}
