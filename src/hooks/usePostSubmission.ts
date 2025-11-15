@@ -44,7 +44,16 @@ export function usePostSubmission({
       let apiEndpoint = "";
       let actionType: ActionType = "create";
 
-      const payload: PostApiPayload = { ...formData };
+      // Ensure pubDate is a valid Date object before further processing
+      const pubDate =
+        formData.pubDate instanceof Date
+          ? formData.pubDate
+          : new Date(formData.pubDate);
+
+      const payload: PostApiPayload = {
+        ...formData,
+        pubDate: pubDate.toISOString(), // Use ISO string for the payload
+      };
 
       if (formData.bookCoverImageName || formData.bookCoverAlt) {
         payload.bookCover = {
