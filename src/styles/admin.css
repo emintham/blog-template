@@ -605,16 +605,36 @@ body.admin-scope .inline-quotes-manager > .inline-quotes-label {
 
 /* -------------------------------------------------------------------------- */
 body.admin-scope .form-feedback-container {
-  margin-top: var(--spacing-lg-admin);
+  position: fixed;
+  top: var(--spacing-lg-admin);
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 600px;
+  width: 90%;
   padding: var(--spacing-md-admin);
   border-radius: var(--border-radius-admin);
   display: none;
   border-left: 3px solid transparent;
-  background-color: rgb(237 237 237 / 30%);
+  background-color: rgb(250 248 245 / 95%);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+  z-index: 1000;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 body.admin-scope .form-feedback-container.visible {
   display: block;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 body.admin-scope .form-feedback-container p {
