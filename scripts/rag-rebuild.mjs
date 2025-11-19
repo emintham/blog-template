@@ -31,8 +31,16 @@ try {
 
   console.log("📂 Initializing RAG service...\n");
 
-  // Initialize provider and storage
+  // Initialize provider and detect dimensions
   const provider = await getEmbeddingProvider();
+
+  // Trigger dimension detection for Ollama provider before creating storage
+  if (provider.dimensions === 0) {
+    console.log("🔍 Detecting embedding dimensions...");
+    await provider.embedSingle("test");
+    console.log(`   Detected: ${provider.dimensions}d\n`);
+  }
+
   const storage = await createStorage(provider.dimensions, provider.name);
 
   console.log("📂 Scanning content...");
