@@ -51,6 +51,7 @@ const blogCollection = defineCollection({
       .optional(),
     quotesRef: z.string().optional(),
     bookTags: z.array(z.string()).optional(),
+    rating: z.number().min(0).max(100).optional(),
   }),
 });
 

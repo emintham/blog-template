@@ -8,7 +8,9 @@ import { usePostFormInitialization } from "../../../hooks/usePostFormInitializat
 import InlineQuotesManager from "./InlineQuotesManager";
 import TagsComponent from "./TagsComponent";
 import SeriesComponent from "./SeriesComponent"; // IMPORT SeriesComponent
-import MarkdownEditor, { type MarkdownEditorRef } from "../shared/MarkdownEditor";
+import MarkdownEditor, {
+  type MarkdownEditorRef,
+} from "../shared/MarkdownEditor";
 import { ImageUploadZone } from "./ImageUploadZone";
 import CollapsibleFieldset from "../shared/CollapsibleFieldset";
 
@@ -40,6 +42,7 @@ const defaultValues: PostFormData = {
   bookCoverAlt: "",
   quotesRef: "",
   bookTags: [], // Changed from '' to []
+  rating: 0, // 0-100 rating for book notes
   inlineQuotes: [], // Added for inline quotes
   originalSlug: undefined,
   originalFilePath: undefined,
@@ -252,7 +255,9 @@ const PostForm: React.FC<PostFormProps> = ({
     const handleAIInsertText = (event: Event) => {
       const customEvent = event as CustomEvent<{ content: string }>;
       if (customEvent.detail?.content && markdownEditorRef.current) {
-        markdownEditorRef.current.insertText("\n\n" + customEvent.detail.content + "\n\n");
+        markdownEditorRef.current.insertText(
+          "\n\n" + customEvent.detail.content + "\n\n"
+        );
       }
     };
 
@@ -394,6 +399,17 @@ const PostForm: React.FC<PostFormProps> = ({
               </span>
             )}
           </div>
+          <div className="form-field">
+            <label htmlFor="rating">Rating (0-100)</label>
+            <input
+              type="number"
+              id="rating"
+              min="0"
+              max="100"
+              placeholder="e.g., 85"
+              {...register("rating", { valueAsNumber: true })}
+            />
+          </div>
           <InlineQuotesManager
             quotes={inlineQuotes}
             onAddQuote={handleAddQuote}
@@ -440,8 +456,11 @@ const PostForm: React.FC<PostFormProps> = ({
           />
           <div className="word-count">
             {(() => {
-              const words = watchedBodyContent.trim().split(/\s+/).filter(Boolean);
-              return `${words.length} word${words.length !== 1 ? 's' : ''}`;
+              const words = watchedBodyContent
+                .trim()
+                .split(/\s+/)
+                .filter(Boolean);
+              return `${words.length} word${words.length !== 1 ? "s" : ""}`;
             })()}
           </div>
         </div>

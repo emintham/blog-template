@@ -54,6 +54,7 @@ body.admin-scope .button-add-quote {
 /* Input field base styles */
 body.admin-scope .input-base,
 body.admin-scope input[type="text"],
+body.admin-scope input[type="number"],
 body.admin-scope input[type="date"],
 body.admin-scope input[type="email"],
 body.admin-scope input[type="password"],
@@ -79,6 +80,7 @@ body.admin-scope textarea {
 
 body.admin-scope .input-base:focus,
 body.admin-scope input[type="text"]:focus,
+body.admin-scope input[type="number"]:focus,
 body.admin-scope input[type="date"]:focus,
 body.admin-scope input[type="email"]:focus,
 body.admin-scope input[type="password"]:focus,
@@ -670,7 +672,7 @@ body.admin-scope .error-boundary-content {
   border-radius: var(--border-radius-admin);
   padding: var(--spacing-xl-admin);
   max-width: 600px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
 }
 
 body.admin-scope .error-boundary-content h2 {

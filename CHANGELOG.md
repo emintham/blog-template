@@ -1,5 +1,9 @@
 # Changelog
 
+## Dec 13, 2025
+
+- Added rating field (0-100) to Book Notes with progress bar visual indicator on detail and preview pages.
+
 ## Nov 22, 2025
 
 - Added Text Analysis panel with Lexi API integration for writing metrics (vocabulary diversity, adverb density, cognitive load, semantic pacing, sentiment arc).

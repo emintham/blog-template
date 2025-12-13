@@ -22,6 +22,7 @@ export interface PostSourceData {
   quotesRef?: string; // Reference to a quotes file or section
   bookTags?: string | string[]; // Tags specific to the book note
   inlineQuotes?: Quote[]; // Loaded inline quotes for edit mode
+  rating?: number; // 0-100 rating for book notes
 
   // Fields for identifying an existing post, typically used for updates
   originalSlug?: string;
@@ -59,6 +60,7 @@ export interface PostFormData {
   bookCoverAlt: string; // Flat structure for form input
   quotesRef: string;
   bookTags: string[]; // Changed from string to string[]
+  rating: number; // 0-100 rating for book notes
 
   // Original identifiers, carried over if editing an existing post
   originalSlug?: string;
@@ -90,6 +92,7 @@ export interface PostApiPayload {
   bookCover?: { imageName?: string; alt?: string; originalWidth?: number }; // Added originalWidth
   quotesRef?: string;
   bookTags?: string | string[]; // Explicitly allow string array
+  rating?: number; // 0-100 rating for book notes
 
   originalSlug?: string;
   originalFilePath?: string;
@@ -118,6 +121,7 @@ export interface FrontmatterObject {
   bookCover?: { imageName?: string; alt?: string; originalWidth?: number }; // Added originalWidth
   quotesRef?: string;
   bookTags?: string[]; // Stored as an array of strings
+  rating?: number; // 0-100 rating for book notes
 }
 
 export interface SentenceData {

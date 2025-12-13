@@ -150,6 +150,10 @@ export async function transformApiPayloadToFrontmatter(
         frontmatter.bookTags = bookTagsArray;
       }
     }
+
+    if (payload.rating !== undefined && payload.rating > 0) {
+      frontmatter.rating = payload.rating;
+    }
   }
 
   // Remove any top-level undefined properties that might have been set conditionally

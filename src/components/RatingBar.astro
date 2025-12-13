@@ -1,0 +1,52 @@
+---
+// src/components/RatingBar.astro
+// Displays a visual progress bar for book note ratings (0-100)
+
+interface Props {
+  rating: number;
+  showLabel?: boolean;
+}
+
+const { rating, showLabel = true }: Props = Astro.props;
+
+// Clamp rating to valid range
+const clampedRating = Math.max(0, Math.min(100, rating));
+---
+
+<div class="rating-bar">
+  {showLabel && <span class="rating-label">{clampedRating}/100</span>}
+  <div class="rating-track">
+    <div class="rating-fill" style={`width: ${clampedRating}%`}></div>
+  </div>
+</div>
+
+<style>
+  .rating-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .rating-label {
+    font-size: 0.85rem;
+    color: var(--color-meta);
+    font-family: var(--font-sans);
+    white-space: nowrap;
+  }
+
+  .rating-track {
+    flex: 1;
+    height: 6px;
+    background: var(--color-border-subtle);
+    border-radius: 3px;
+    overflow: hidden;
+    max-width: 120px;
+  }
+
+  .rating-fill {
+    height: 100%;
+    background: var(--color-accent);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+</style>

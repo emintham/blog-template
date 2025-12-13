@@ -116,8 +116,9 @@ The codebase implements three distinct post types with conditional rendering thr
 
 - Specialized content type for book reviews and knowledge curation
 - Requires: `bookTitle`, `bookAuthor`, `bookCover` (image metadata), `bookTags`
+- Optional: `rating` (0-100) - displayed as progress bar on detail and preview pages
 - Associated quotes stored in separate YAML files via `quotesRef` field
-- Rich display with book cover image, collapsible quotes section
+- Rich display with book cover image, rating bar, collapsible quotes section
 - Distinct preview cards and detail pages
 
 **Critical:** Always check `postType` when rendering/processing posts. `PostPreview.astro` routes to type-specific components.

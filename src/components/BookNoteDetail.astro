@@ -6,6 +6,7 @@ import { getEntry } from "astro:content";
 import Remark42Comments from "./Remark42Comments.astro";
 import BookQuotesSection from "./BookQuotesSection.astro";
 import ResponsiveImage from "./ResponsiveImage.astro";
+import RatingBar from "./RatingBar.astro";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Props {
@@ -20,6 +21,7 @@ interface Props {
       bookCover?: { imageName: string; alt: string; originalWidth?: number }; // Schema includes originalWidth
       quotesRef?: string;
       bookTags?: string[];
+      rating?: number;
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     render: () => Promise<{ Content: any }>;
@@ -75,9 +77,17 @@ const detailDefaultWidth = detailImageWidths.includes(800)
       frontmatter.bookTitle && (
         <div class="book-info">
           <h2 class="book-title">{frontmatter.bookTitle}</h2>
-          {frontmatter.bookAuthor && (
-            <p class="book-author">by {frontmatter.bookAuthor}</p>
-          )}
+          <div class="book-author">
+            {frontmatter.bookAuthor && <span>by {frontmatter.bookAuthor}</span>}
+            {frontmatter.rating !== undefined && frontmatter.rating > 0 && (
+              <>
+                {frontmatter.bookAuthor && (
+                  <span class="separator">&bull;</span>
+                )}
+                <RatingBar rating={frontmatter.rating} />
+              </>
+            )}
+          </div>
         </div>
       )
     }
@@ -200,6 +210,13 @@ const detailDefaultWidth = detailImageWidths.includes(800)
     font-size: 1rem;
     color: var(--color-meta);
     margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .book-author .separator {
+    color: var(--color-border-subtle);
   }
   .book-note-header .meta {
     font-family: var(--font-sans);

@@ -51,6 +51,7 @@ const BookNoteFieldsSchema = z.object({
   quotesRef: z.string().optional(),
   bookTags: z.union([z.string(), z.array(z.string())]).optional(),
   inlineQuotes: z.array(QuoteSchema).optional(),
+  rating: z.number().min(0).max(100).optional(),
 });
 
 /**

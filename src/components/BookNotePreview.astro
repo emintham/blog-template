@@ -4,6 +4,7 @@
 import ResponsiveImage from "./ResponsiveImage.astro"; // Import the ResponsiveImage component
 import PostMeta from "./PostMeta.astro";
 import PreviewLinkWrapper from "./PreviewLinkWrapper.astro";
+import RatingBar from "./RatingBar.astro";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Props {
@@ -21,6 +22,7 @@ interface Props {
       bookTitle?: string;
       bookAuthor?: string;
       bookCover?: { imageName: string; alt: string }; // For the book's cover image
+      rating?: number;
     };
   };
 }
@@ -75,10 +77,18 @@ const previewDefaultWidth = previewImageWidths.includes(100)
 
       {
         frontmatter.bookTitle && (
-          <p class="book-title-author">
-            {frontmatter.bookTitle} by{" "}
-            {frontmatter.bookAuthor || "Unknown Author"}
-          </p>
+          <div class="book-title-author">
+            <span>
+              {frontmatter.bookTitle} by{" "}
+              {frontmatter.bookAuthor || "Unknown Author"}
+            </span>
+            {frontmatter.rating !== undefined && frontmatter.rating > 0 && (
+              <>
+                <span class="separator">&bull;</span>
+                <RatingBar rating={frontmatter.rating} />
+              </>
+            )}
+          </div>
         )
       }
 
@@ -154,6 +164,14 @@ const previewDefaultWidth = previewImageWidths.includes(100)
     color: var(--color-text);
     margin-top: 0;
     margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .book-note-preview .book-title-author .separator {
+    color: var(--color-border-subtle);
   }
 
   .book-note-preview .meta {
