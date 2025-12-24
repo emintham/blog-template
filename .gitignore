@@ -34,3 +34,4 @@ data/rag/
 
 # AI assistant conversation history (do not commit)
 data/assistant.db*
+editor/server/zen.db
